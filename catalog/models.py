@@ -43,7 +43,5 @@ class Book(models.Model):
     language = models.CharField(blank=True, null=True, max_length=50)
     cover = models.ImageField(upload_to='books/', height_field=None, width_field=None, default='books/default.jpg')
 
-    class Meta:
-        ordering = ['title']
     def __str__(self):
         return self.title
