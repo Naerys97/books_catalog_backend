@@ -117,7 +117,8 @@ USE_I18N = True
 USE_TZ = True
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',)
+    'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',),
+    'EXCEPTION_HANDLER': 'catalog.utils.custom_exception_handler'
 }
 
 # Static files (CSS, JavaScript, Images)

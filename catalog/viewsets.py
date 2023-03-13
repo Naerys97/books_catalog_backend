@@ -6,12 +6,14 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.response import Response
 from rest_framework import status
 from . import models, serializers
+from .utils import BookAlreadyExists
 
 
 class BookViewSet(ModelViewSet):
     queryset = models.Book.objects.all()
     serializer_class = serializers.BookSerializer
     parser_classes = (MultiPartParser, FormParser)
+
     #
     # data = {'title': 'Daddy Long Legs',
     #         'amount': 2, 'description': 'Papaito',
@@ -35,15 +37,16 @@ class BookViewSet(ModelViewSet):
         # json.loads(data.pop('authors')[0])
         newAuthors = [{'name': author} for author in data['authors'] if type(author) is str]
         existingAuthors = [author for author in data['authors'] if type(author) is int]
-        genres = request.data['genres']
-        editorial = request.data['editorial']
+        if models.Book.objects.filter(title__exact=data['title']).filter(authors__in=existingAuthors).exists():
+            raise BookAlreadyExists()
+            # raise Exception('The book you are trying to create already exists.')
+        genres = data['genres']
+        editorial = data['editorial']
         data['authors'] = newAuthors
         serialized_book = self.get_serializer(data=data)
-        if serialized_book.is_valid():
-            serialized_book.save(existingAuthors=existingAuthors, genres=genres, editorial=editorial)
-            return Response(data=serialized_book.data, status=status.HTTP_201_CREATED)
-        else:
-            return Response(data=serialized_book.errors, status=status.HTTP_400_BAD_REQUEST)
+        serialized_book.is_valid(raise_exception=True)
+        serialized_book.save(existingAuthors=existingAuthors, genres=genres, editorial=editorial)
+        return Response(data=serialized_book.data, status=status.HTTP_201_CREATED)
 
     @transaction.atomic
     def update(self, request, *args, **kwargs):
@@ -51,11 +54,11 @@ class BookViewSet(ModelViewSet):
         instance = self.get_object()
         newAuthors = [{'name': author} for author in data['authors'] if type(author) is str]
         existingAuthors = [author for author in data['authors'] if type(author) is int]
-        genres = request.data['genres']
-        editorial = request.data['editorial']
+        genres = data['genres']
+        editorial = data['editorial']
         data['authors'] = newAuthors
         serialized_book = self.get_serializer(instance=instance, data=data)
-        if serialized_book.is_valid():
+        if serialized_book.is_valid(raise_exception=True):
             serialized_book.save(existingAuthors=existingAuthors, genres=genres, editorial=editorial)
             return Response(data=serialized_book.data, status=status.HTTP_200_OK)
         else:
