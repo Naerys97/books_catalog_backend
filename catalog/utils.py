@@ -9,7 +9,7 @@ def custom_exception_handler(exec, context):
     if response is not None:
         # Using the description's of the HTTPStatus class as error message.
         http_code_to_message = {v.value: v.description for v in HTTPStatus}
-        print('exception handler')
+        print(response.data)
         error_payload = {
             "error": {
                 "status_code": 0,

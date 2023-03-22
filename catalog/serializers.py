@@ -38,6 +38,7 @@ class BookSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def create(self, validated_data):
+        print(validated_data)
         authors = validated_data.pop('authors') + validated_data.pop('existingAuthors')
         editorial = validated_data.pop('editorial')
         genres = validated_data.pop('genres')
@@ -83,6 +84,6 @@ class BookSerializer(serializers.ModelSerializer):
         for genre in validated_data['genres']:
             instance.genres.add(genre)
         # Updating Editorial
-        if instance.editorial.id != editorial:
+        if not instance.editorial or instance.editorial.id != editorial:
             models.Editorial.objects.get(pk=editorial).books.add(instance)
         return instance
