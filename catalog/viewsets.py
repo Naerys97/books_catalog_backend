@@ -31,7 +31,7 @@ class BookViewSet(ModelViewSet):
 
     @transaction.atomic
     def create(self, request, *args, **kwargs):
-        print(request.data)
+        # print(request.data)
         # breakpoint()
         data = request.data.dict()
         authors_data = json.loads(data['authors'])

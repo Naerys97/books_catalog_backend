@@ -79,11 +79,11 @@ WSGI_APPLICATION = 'books_catalog_backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'books-catalog',
-        'USER': 'postgres',
-        'PASSWORD': 'p0576r35',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+        'NAME': os.environ.get("POSTGRES_DB", "books-catalog"),
+        'USER': os.environ.get("POSTGRES_USER", 'postgres'),
+        'PASSWORD': os.environ.get("POSTGRES_PASSWORD", 'p0576r35'),
+        'HOST': os.environ.get("POSTGRES_HOST", '127.0.0.1'),
+        'PORT': os.environ.get("POSTGRES_PORT", '5432'),
     }
 }
 
