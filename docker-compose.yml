@@ -13,7 +13,7 @@ services:
 #    depends_on:
 #      - backend
   backend:
-    container_name: catalog-api
+    container_name: python-api
     build:
       context: .
       dockerfile: Dockerfile
@@ -30,7 +30,7 @@ services:
       db:
         condition: service_healthy
   db:
-    container_name: catalog-db
+    container_name: postgres-db
     image: postgres:15.2-alpine
     ports:
       - '5433:5432'

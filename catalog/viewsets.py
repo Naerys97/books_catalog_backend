@@ -14,20 +14,7 @@ class BookViewSet(ModelViewSet):
     serializer_class = serializers.BookSerializer
     parser_classes = (MultiPartParser, FormParser)
 
-    #
-    # data = {'title': 'Daddy Long Legs',
-    #         'amount': 2, 'description': 'Papaito',
-    #         'language': 'English', 'details': 'Shiny New',
-    #         'quality': 'good', 'genres': [16],
-    #         'authors': [{'name': 'Jean Webster'}]}
 
-    # < QueryDict: {'csrfmiddlewaretoken': ['oyP6T2iFfpg5OL25r52rnkr0Itcvb8dTnafO8OgL3r53NGsjfHed7OABQucEIrhx'],
-    #               'title': ['Hello World'], 'amount': ['3'], 'description': ["Judy's letters to Jervis"],
-    #               'quality': ['good'], 'details': ['Brand new'], 'language': ['English'],
-    #               'cover': [ < InMemoryUploadedFile: Annotation
-    # 2022 - 11 - 18
-    # 081126.
-    # png(image / png) >]} >
 
     @transaction.atomic
     def create(self, request, *args, **kwargs):
